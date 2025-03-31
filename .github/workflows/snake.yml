@@ -1,11 +1,14 @@
 name: generate animation
 
 on:
+  # 每 24 小时自动运行一次
   schedule:
-    - cron: "0 */24 * * *" 
+    - cron: "0 */24 * * *"
 
+  # 允许手动运行工作流
   workflow_dispatch:
 
+  # 当 main 分支有 push 时触发
   push:
     branches:
       - main
@@ -16,6 +19,11 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      # 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 生成 GitHub 贡献图动画（蛇形）
       - name: generate github-contribution-grid-snake.svg
         uses: Platane/snk/svg-only@v3
         with:
@@ -26,10 +34,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: push github-contribution-grid-snake.svg to the output branch
+      # 配置 Git 信息
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 推送 `github-contribution-grid-snake.svg` 到 output 分支
+      - name: Push github-contribution-grid-snake.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: output
           build_dir: dist
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
