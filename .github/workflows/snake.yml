@@ -10,26 +10,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # 更新 checkout 版本
+        uses: actions/checkout@v4
+
+      - name: Create output directory
+        run: mkdir -p output  # 确保 output 目录存在
 
       - name: Generate contribution snake
         uses: Platane/snk@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+            output/github-contribution-grid-snake.svg
+            output/github-contribution-grid-snake-dark.svg?palette=github-dark
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4  # 更新到 v4 版本
+        uses: actions/upload-artifact@v4
         with:
           name: snake
-          path: dist
+          path: output
 
       - name: Commit and push
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add dist
+          git add output
           git commit -m "Update contribution snake" || echo "No changes to commit"
           git push || echo "No changes to push"
