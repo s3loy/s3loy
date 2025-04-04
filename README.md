@@ -16,4 +16,8 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+![](https://raw.githubusercontent.com/s3loy/s3loy/refs/heads/output/github-contribution-grid-snake.svg)
 
+
+
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=s3loy&show_icons=true&bg_color=00000000)
